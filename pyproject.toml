@@ -1,0 +1,78 @@
+[project]
+name = "web-archive-api"
+authors = [
+    {name = "Jan Heinrich Reimer", email = "heinrich.reimer@uni-jena.de"},
+]
+description = "Unified, type-safe access to web archive APIs."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "requests~=2.31",
+    "tqdm~=4.66",
+    "typing-extensions~=4.0",
+    "importlib-metadata~=4.0",
+    "warcio~=1.7",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+tests =[
+    "bandit[toml]~=1.7",
+    "flake8~=5.0",
+    "mypy~=1.5",
+    "pylint~=2.12",
+    "pytest~=7.2",
+    "pytest-cov~=4.0",
+    "types-requests~=2.31",
+    "types-tqdm~=4.66",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/heinrichreimer/web-archive-api"
+"Bug Tracker" = "https://github.com/heinrichreimer/web-archive-api/issues"
+
+[build-system]
+requires = ["setuptools>=50", "setuptools_scm[toml]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["web_archive_api"]
+namespaces = false
+
+[tool.setuptools.package-data]
+mypkg = ["*.txt", "*.md", "*.rst"]
+
+[tool.setuptools_scm]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pylint.messages_control]
+disable = [
+    "C",
+    "R",
+    "fixme",
+    "logging-fstring-interpolation"
+]
+
+[tool.bandit.assert_used]
+skips = ["**/test_*.py"]
+
+[tool.pytest.ini_options]
+log_cli = "True"
