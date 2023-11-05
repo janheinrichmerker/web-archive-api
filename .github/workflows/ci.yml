@@ -188,6 +188,8 @@ jobs:
     - python-code-format
     - python-lint
     - python-test
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
