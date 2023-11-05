@@ -53,8 +53,8 @@ Verify your changes against the test suite to verify.
 
 ```shell
 flake8 web_archive_api  # Code format
+mypy web_archive_api    # Static typing
 pylint web_archive_api  # LINT errors
-mypy web_archive_api  # Static typing
 bandit -c pyproject.toml -r web_archive_api  # Security
 pytest web_archive_api  # Unit tests
 ```
