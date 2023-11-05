@@ -19,10 +19,10 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
+    "importlib-metadata~=6.8",
     "requests~=2.31",
     "tqdm~=4.66",
     "typing-extensions~=4.0",
-    "importlib-metadata~=6.8",
     "warcio~=1.7",
 ]
 dynamic = ["version"]
