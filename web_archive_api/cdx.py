@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
 from json import loads, JSONDecodeError
-from typing import Iterator, NamedTuple, Any, Iterable
+from typing import Iterator, NamedTuple, Any, Iterable, Optional, Union, \
+    Sequence, MutableSequence, AbstractSet
 from urllib.parse import urlencode, urljoin
 from warnings import warn
 
@@ -65,41 +66,41 @@ class CdxCapture:
     only for HTTP captured resources. It may represent an MD5, a SHA1, and
     may be a fragment of the full representation of the digest.
     """
-    status_code: int | None
+    status_code: Optional[int]
     """
     HTTP response code (3-digit integer). May be '0' in some
     fringe conditions, old ARCs, bug in crawler, etc.
     """
-    mimetype: str | None
+    mimetype: Optional[str]
     """
     Best guess at the MIME type of the document's content.
     """
-    filename: str | None
+    filename: Optional[str]
     """
     Basename of the WARC/ARC file containing the capture.
     """
-    offset: int | None
+    offset: Optional[int]
     """
     Compressed byte offset within WARC/ARC file where
     this document's Gzip envelope begins.
     """
-    length: int | None
+    length: Optional[int]
     """
     Compressed length of the document's Gzip envelope.
     """
-    access: str | None
-    redirect_url: str | None
+    access: Optional[str]
+    redirect_url: Optional[str]
     """
     URL that this document redirected to.
     """
-    flags: set[CdxFlag] | None
+    flags: Optional[AbstractSet[CdxFlag]]
     """
     Flags indicating robot instructions found in an HTML page
     or password protection.
     """
-    collection: str | None
-    source: str | None
-    source_collection: str | None
+    collection: Optional[str]
+    source: Optional[str]
+    source_collection: Optional[str]
 
 
 class CdxMatchType(Enum):
@@ -129,11 +130,11 @@ class _CdxResponse(NamedTuple):
     Internal representation of a CDX API response,
     optionally including a resume key.
     """
-    resume_key: str | None
-    json: list[Any]
+    resume_key: Optional[str]
+    json: Sequence[Any]
 
 
-def _parse_cdx_flags(flags_string: str) -> set[CdxFlag]:
+def _parse_cdx_flags(flags_string: str) -> AbstractSet[CdxFlag]:
     """
     Parse CDX flags from a string of flags.
     """
@@ -294,7 +295,7 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
     )
 
 
-def _parse_cdx_lines(json: list[dict]) -> Iterator[CdxCapture]:
+def _parse_cdx_lines(json: Sequence[dict]) -> Iterator[CdxCapture]:
     """
     Parse CDX lines represented as a list of JSON dicts.
     """
@@ -311,11 +312,11 @@ def _read_response(response: Response) -> _CdxResponse:
     """
     response.raise_for_status()
 
-    lines: list[str] = response.text.splitlines()
+    lines: MutableSequence[str] = response.text.splitlines()
     if len(lines) == 0:
         return _CdxResponse(resume_key=None, json=[])
 
-    json: list[list] | list[dict]
+    json: Union[Sequence[list], Sequence[dict]]
     if lines[0].startswith("[["):
         # Internet Archive style JSON CDX.
         json = response.json()
@@ -363,8 +364,8 @@ class CdxApi:
             self,
             url: str,
             match_type: CdxMatchType,
-            from_timestamp: datetime | None = None,
-            to_timestamp: datetime | None = None,
+            from_timestamp: Optional[datetime] = None,
+            to_timestamp: Optional[datetime] = None,
     ) -> Iterator[CdxCapture]:
         """
         Query and iterate captures of a URL from the CDX API.

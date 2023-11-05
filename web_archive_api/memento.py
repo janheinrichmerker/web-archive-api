@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Iterator, NamedTuple
+from typing import Iterator, NamedTuple, Optional, Union
 from urllib.parse import urljoin
 
 from requests import Session, Response
@@ -13,7 +13,7 @@ from web_archive_api.cdx import CdxCapture
 
 class _TimestampUrl(NamedTuple):
     url: str
-    timestamp: datetime | None
+    timestamp: Optional[datetime]
 
 
 @dataclass(frozen=True)
@@ -37,7 +37,7 @@ class MementoApi:
 
     def _load(
             self,
-            url_or_cdx_capture: _TimestampUrl | CdxCapture,
+            url_or_cdx_capture: Union[_TimestampUrl, CdxCapture],
             raw: bool,
     ) -> Response:
         if isinstance(url_or_cdx_capture, _TimestampUrl):
@@ -64,7 +64,7 @@ class MementoApi:
     def load_url(
             self,
             url: str,
-            timestamp: datetime | None = None,
+            timestamp: Optional[datetime] = None,
             raw: bool = False,
     ) -> Response:
         """
@@ -93,7 +93,7 @@ class MementoApi:
 
     def _load_warc(
             self,
-            url_or_cdx_capture: _TimestampUrl | CdxCapture,
+            url_or_cdx_capture: Union[_TimestampUrl, CdxCapture],
             raw: bool,
     ) -> Iterator[ArcWarcRecord]:
         with capture_http() as writer:
@@ -103,7 +103,7 @@ class MementoApi:
     def load_url_warc(
             self,
             url: str,
-            timestamp: datetime | None = None,
+            timestamp: Optional[datetime] = None,
             raw: bool = False,
     ) -> Iterator[ArcWarcRecord]:
         """
