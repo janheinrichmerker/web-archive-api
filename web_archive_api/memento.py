@@ -56,7 +56,10 @@ class MementoApi:
                 timestamp.astimezone(timezone.utc).strftime("%Y%m%d%H%M%S"))
         memento_raw_suffix = "id_" if raw else ""
         memento_path = f"{memento_timestamp}{memento_raw_suffix}/{url}"
-        memento_raw_url = urljoin(self.api_url, memento_path)
+        api_url = self.api_url
+        if not api_url.endswith("/"):
+            api_url += "/"
+        memento_raw_url = urljoin(api_url, memento_path)
         response = self.session.get(memento_raw_url)
         response.raise_for_status()
         return response
