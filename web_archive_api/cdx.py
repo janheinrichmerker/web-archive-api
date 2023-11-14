@@ -208,6 +208,10 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         mimetype = line.pop("mimetype")
     elif "mime" in line:
         mimetype = line.pop("mime")
+        if "mime-detected" in line:
+            line.pop("mime-detected")
+    elif "mime-detected" in line:
+        mimetype = line.pop("mime-detected")
     else:
         mimetype = None
     # Parse filename from 'filename' field.
