@@ -11,7 +11,8 @@ def test_google_2023_response():
     response = api.load_url(url, timestamp)
     assert response is not None
     assert match(
-        r"https://web\.archive\.org/web/20230101000000/https?://?www\.google\.com/",
+        r"https://web\.archive\.org/web/20230101000000/"
+        r"https?://?www\.google\.com/",
         response.url)
     assert response.status_code == 200
     assert response.text.startswith("<!doctype html>")
