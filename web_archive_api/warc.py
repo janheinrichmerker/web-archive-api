@@ -1,6 +1,6 @@
 from io import BytesIO
 from typing import Iterator, Sequence, Mapping, IO
-from urllib.parse import urlparse, ParseResult
+from urllib.parse import urlsplit, SplitResult
 
 from requests import Response, PreparedRequest
 from warcio.recordbuilder import RecordBuilder
@@ -16,17 +16,20 @@ def _get_proxy_information(response: Response) -> Mapping[str, str]:
     if proxy_manager is None:
         return {}
 
-    proxy_info = {}
     request_url = response.request.url
+    if request_url is None:
+        return {}
+
+    proxy_info = {
+        "request_path": request_url,
+    }
     if request_url.startswith("https://"):
         proxy_info["method"] = "CONNECT"
-
-    proxy_info["request_path"] = request_url
     return proxy_info
 
 
 def _build_request_path(
-        parsed_url: ParseResult,
+        parsed_url: SplitResult,
         proxy_info: Mapping[str, str],
 ) -> str:
     proxy_url = proxy_info.get("request_path")
@@ -46,7 +49,10 @@ def _request_record(
         proxy_info: Mapping[str, str],
         record_builder: RecordBuilder
 ) -> ArcWarcRecord:
-    parsed_url: ParseResult = urlparse(request.url)
+    if request.url is None:
+        raise ValueError("Request URL not given.")
+
+    parsed_url: SplitResult = urlsplit(request.url)
     method: str
     if "method" in proxy_info:
         method = proxy_info["method"]
