@@ -191,13 +191,13 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
     # Parse HTTP status code from 'statuscode' or 'status' field.
     if "statuscode" in line:
         status_code_string = line.pop("statuscode")
-        if status_code_string is None:
+        if status_code_string is None or not status_code_string.isnumeric():
             status_code = None
         else:
             status_code = int(status_code_string)
     elif "status" in line:
         status_code_string = line.pop("status")
-        if status_code_string is None:
+        if status_code_string is None or not status_code_string.isnumeric():
             status_code = None
         else:
             status_code = int(status_code_string)
@@ -222,7 +222,7 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
     # Parse Gzip envelope offset from 'offset' field.
     if "offset" in line:
         offset_string = line.pop("offset")
-        if offset_string is None:
+        if offset_string is None or not offset_string.isnumeric():
             offset = None
         else:
             offset = int(offset_string)
@@ -231,7 +231,7 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
     # Parse Gzip envelope length from 'length' field.
     if "length" in line:
         length_string = line.pop("length")
-        if length_string is None:
+        if length_string is None or not length_string.isnumeric():
             length = None
         else:
             length = int(length_string)
