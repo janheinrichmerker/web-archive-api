@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Iterator, NamedTuple, Optional, Union
+from typing import NamedTuple, Optional, Union, Sequence
 from urllib.parse import urljoin
 
 from requests import Session, Response
-from warcio.archiveiterator import ArchiveIterator
-from warcio.capture_http import capture_http
 from warcio.recordloader import ArcWarcRecord
 
 from web_archive_api.cdx import CdxCapture
+from web_archive_api.warc import get_warc_records
 
 
 class _TimestampUrl(NamedTuple):
@@ -98,17 +97,15 @@ class MementoApi:
             self,
             url_or_cdx_capture: Union[_TimestampUrl, CdxCapture],
             raw: bool,
-    ) -> Iterator[ArcWarcRecord]:
-        with capture_http() as writer:
-            self._load(url_or_cdx_capture, raw)
-            yield from ArchiveIterator(writer.get_stream())
+    ) -> Sequence[ArcWarcRecord]:
+        return get_warc_records(self._load(url_or_cdx_capture, raw))
 
     def load_url_warc(
             self,
             url: str,
             timestamp: Optional[datetime] = None,
             raw: bool = False,
-    ) -> Iterator[ArcWarcRecord]:
+    ) -> Sequence[ArcWarcRecord]:
         """
         Load a captured document from the Memento API and
         capture the HTTP request and response as WARC records.
@@ -124,7 +121,7 @@ class MementoApi:
             self,
             capture: CdxCapture,
             raw: bool = False,
-    ) -> Iterator[ArcWarcRecord]:
+    ) -> Sequence[ArcWarcRecord]:
         """
         Load a captured document from the Memento API and
         capture the HTTP request and response as WARC records.
