@@ -101,6 +101,7 @@ class CdxCapture:
     collection: Optional[str]
     source: Optional[str]
     source_collection: Optional[str]
+    metadata: Optional[Any]
 
 
 class CdxMatchType(Enum):
@@ -203,7 +204,7 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
             status_code = int(status_code_string)
     else:
         status_code = None
-    # Parse mime type guess from 'mimetype' or 'mime' field.
+    # Parse mime type guess from 'mimetype', 'mime', or 'mime-detected' field.
     if "mimetype" in line:
         mimetype = line.pop("mimetype")
     elif "mime" in line:
@@ -277,6 +278,11 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         source_collection = line.pop("source-coll")
     else:
         source_collection = None
+    # Parse metadata from 'metadata' field.
+    if "metadata" in line:
+        metadata = line.pop("metadata")
+    else:
+        metadata = None
     if len(line) > 0:
         # Fail fast if any fields are left unparsed.
         raise RuntimeError(f"Unparsed fields in CDX line: {line}")
@@ -296,6 +302,7 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         collection=collection,
         source=source,
         source_collection=source_collection,
+        metadata=metadata,
     )
 
 
