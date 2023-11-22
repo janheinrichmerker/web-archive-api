@@ -93,6 +93,10 @@ class CdxCapture:
     """
     URL that this document redirected to.
     """
+    memento_raw_url: str
+    """
+    URL to the raw Memento of this captured document.
+    """
     flags: Optional[AbstractSet[CdxFlag]]
     """
     Flags indicating robot instructions found in an HTML page
@@ -102,6 +106,10 @@ class CdxCapture:
     source: Optional[str]
     source_collection: Optional[str]
     metadata: Optional[Any]
+    fuzzy: Optional[bool]
+    """
+    Flag indicating if fuzzy matching was enabled for this request.
+    """
 
 
 class CdxMatchType(Enum):
@@ -248,6 +256,11 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         redirect_url = line.pop("redirect")
     else:
         redirect_url = None
+    # Parse Memento URL from 'load_url' field.
+    if "load_url" in line:
+        memento_raw_url = line.pop("load_url")
+    else:
+        memento_raw_url = None
     # Parse flags from 'flags' or 'robotflags' field.
     if "flags" in line:
         flags_string = line.pop("flags")
@@ -283,6 +296,15 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         metadata = line.pop("metadata")
     else:
         metadata = None
+    # Parse Fuzzy matching flag from 'is_fuzzy' field.
+    if "is_fuzzy" in line:
+        fuzzy_string = line.pop("is_fuzzy")
+        if fuzzy_string is None or not fuzzy_string.isnumeric():
+            fuzzy = None
+        else:
+            fuzzy = bool(int(fuzzy_string))
+    else:
+        fuzzy = None
     if len(line) > 0:
         # Fail fast if any fields are left unparsed.
         raise RuntimeError(f"Unparsed fields in CDX line: {line}")
@@ -298,11 +320,13 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         length=length,
         access=access,
         redirect_url=redirect_url,
+        memento_raw_url=memento_raw_url,
         flags=flags,
         collection=collection,
         source=source,
         source_collection=source_collection,
         metadata=metadata,
+        fuzzy=fuzzy,
     )
 
 
