@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Python"
       uses: actions/setup-python@v5
       with:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Python"
       uses: actions/setup-python@v5
       with:
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Python"
       uses: actions/setup-python@v5
       with:
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Protoc"
       run: sudo apt install protobuf-compiler
     - name: "🧰 Install Python"
@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Protoc"
       run: sudo apt install protobuf-compiler
     - name: "🧰 Install Python"
@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "🧰 Install Python"
       uses: actions/setup-python@v5
       with:
@@ -172,7 +172,7 @@ jobs:
       id-token: write
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "📥 Download Python wheels"
       uses: actions/download-artifact@v4
       with:
@@ -193,7 +193,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "📥 Check-out"
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: "📥 Download Python wheels"
       uses: actions/download-artifact@v4
       with:
