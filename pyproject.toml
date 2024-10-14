@@ -1,7 +1,7 @@
 [project]
 name = "web-archive-api"
 authors = [
-    {name = "Jan Heinrich Reimer", email = "heinrich.reimer@uni-jena.de"},
+    {name = "Jan Heinrich Merker", email = "heinrich.merker@uni-jena.de"},
 ]
 description = "Unified, type-safe access to web archive APIs."
 readme = "README.md"
@@ -40,8 +40,8 @@ tests =[
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/heinrichreimer/web-archive-api"
-"Bug Tracker" = "https://github.com/heinrichreimer/web-archive-api/issues"
+"Homepage" = "https://github.com/janheinrichmerker/web-archive-api"
+"Bug Tracker" = "https://github.com/janheinrichmerker/web-archive-api/issues"
 
 [build-system]
 requires = ["setuptools>=50", "setuptools_scm[toml]>=6.2", "wheel"]

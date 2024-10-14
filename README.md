@@ -1,11 +1,11 @@
 [![PyPi](https://img.shields.io/pypi/v/web-archive-api?style=flat-square)](https://pypi.org/project/web-archive-api/)
-[![CI](https://img.shields.io/github/actions/workflow/status/heinrichreimer/web-archive-api/ci.yml?branch=main&style=flat-square)](https://github.com/heinrichreimer/web-archive-api/actions/workflows/ci.yml)
-[![Code coverage](https://img.shields.io/codecov/c/github/heinrichreimer/web-archive-api?style=flat-square)](https://codecov.io/github/heinrichreimer/web-archive-api/)
+[![CI](https://img.shields.io/github/actions/workflow/status/janheinrichmerker/web-archive-api/ci.yml?branch=main&style=flat-square)](https://github.com/janheinrichmerker/web-archive-api/actions/workflows/ci.yml)
+[![Code coverage](https://img.shields.io/codecov/c/github/janheinrichmerker/web-archive-api?style=flat-square)](https://codecov.io/github/janheinrichmerker/web-archive-api/)
 [![Python](https://img.shields.io/pypi/pyversions/web-archive-api?style=flat-square)](https://pypi.org/project/web-archive-api/)
-[![Issues](https://img.shields.io/github/issues/heinrichreimer/web-archive-api?style=flat-square)](https://github.com/heinrichreimer/web-archive-api/issues)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/heinrichreimer/web-archive-api?style=flat-square)](https://github.com/heinrichreimer/web-archive-api/commits)
+[![Issues](https://img.shields.io/github/issues/janheinrichmerker/web-archive-api?style=flat-square)](https://github.com/janheinrichmerker/web-archive-api/issues)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/janheinrichmerker/web-archive-api?style=flat-square)](https://github.com/janheinrichmerker/web-archive-api/commits)
 [![Downloads](https://img.shields.io/pypi/dm/web-archive-api?style=flat-square)](https://pypi.org/project/web-archive-api/)
-[![License](https://img.shields.io/github/license/heinrichreimer/web-archive-api?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/janheinrichmerker/web-archive-api?style=flat-square)](LICENSE)
 
 # 🗃️ web-archive-api
 
@@ -71,7 +71,7 @@ python -m build
 
 ## Support
 
-If you hit any problems using this package, please file an [issue](https://github.com/heinrichreimer/web-archive-api/issues/new).
+If you hit any problems using this package, please file an [issue](https://github.com/janheinrichmerker/web-archive-api/issues/new).
 We're happy to help!
 
 ## License
