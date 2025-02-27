@@ -12,6 +12,7 @@
 Unified, type-safe access to web archive APIs.
 
 ## Installation
+
 Install the package from PyPI:
 
 ```shell
@@ -19,6 +20,7 @@ pip install web-archive-api
 ```
 
 ## Usage
+
 Web archives offer two main APIs: the [CDX API](#cdx-api) to list available captures and the [Memento API](#memento-api) to download individual captures.
 
 ### CDX API
@@ -39,24 +41,19 @@ pip install build setuptools wheel
 
 (On most systems, these packages are already pre-installed.)
 
-### Installation
-
-Install package and test dependencies:
+Then, install the package and test dependencies:
 
 ```shell
 pip install -e .[tests]
 ```
 
-### Testing
-
-Verify your changes against the test suite to verify.
+You can now verify your changes against the test suite.
 
 ```shell
-flake8 web_archive_api  # Code format
-mypy web_archive_api    # Static typing
-pylint web_archive_api  # LINT errors
-bandit -c pyproject.toml -r web_archive_api  # Security
-pytest web_archive_api  # Unit tests
+ruff check .                   # Code format and LINT
+mypy .                         # Static typing
+bandit -c pyproject.toml -r .  # Security
+pytest .                       # Unit tests
 ```
 
 Please also add tests for your newly developed code.
