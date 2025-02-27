@@ -60,7 +60,6 @@ class MementoApi:
             api_url += "/"
         memento_raw_url = urljoin(api_url, memento_path)
         response = self.session.get(memento_raw_url)
-        response.raise_for_status()
         return response
 
     def load_url(
