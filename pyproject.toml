@@ -30,11 +30,10 @@ dynamic = ["version"]
 [project.optional-dependencies]
 tests =[
     "bandit[toml]~=1.7",
-    "flake8>=6.1,<8.0",
     "mypy~=1.6",
-    "pylint~=3.0",
     "pytest>=7.2,<9.0",
     "pytest-cov>=4,<6",
+    "ruff~=0.2.1",
     "types-requests~=2.31",
     "types-tqdm~=4.66",
 ]
@@ -51,23 +50,33 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["web_archive_api"]
-namespaces = false
+exclude = [
+    "build",
+    "venv",
+]
 
 [tool.setuptools.package-data]
-mypkg = ["*.txt", "*.md", "*.rst"]
+"*" = ["*.txt", "*.md", "*.rst"]
 
 [tool.setuptools_scm]
 
+[tool.ruff]
+exclude = [
+    "build",
+    "venv",
+]
+
 [tool.mypy]
 ignore_missing_imports = true
+exclude = [
+    "build",
+    "venv",
+]
 
-[tool.pylint.messages_control]
-disable = [
-    "C",
-    "R",
-    "fixme",
-    "logging-fstring-interpolation"
+[tool.bandit]
+exclude_dirs = [
+    "build",
+    "venv",
 ]
 
 [tool.bandit.assert_used]
