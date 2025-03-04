@@ -178,11 +178,17 @@ def _parse_cdx_line(line: dict) -> CdxCapture:
         raise ValueError(f"Missing URL key in CDX line: {line}")
     # Parse capture timestamp from 'timestamp' field.
     if "timestamp" in line and line["timestamp"] is not None:
-        timestamp = datetime.strptime(
-            # Important to add the UTC timezone explicitly.
-            f"{line.pop('timestamp')}+0000",
-            "%Y%m%d%H%M%S%z"
-        )
+        timestamp_string = line.pop("timestamp")
+        try:
+            timestamp = datetime.strptime(
+                # Important to add the UTC timezone explicitly.
+                f"{timestamp_string}+0000",
+                "%Y%m%d%H%M%S%z"
+            )
+        except ValueError as e:
+            raise ValueError(
+                f"Invalid timestamp '{timestamp_string}' in CDX line: {line}"
+            ) from e
     else:
         raise ValueError(f"Missing timestamp in CDX line: {line}")
     # Parse original URL from 'url' or 'original' field.

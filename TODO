@@ -1,0 +1,88 @@
+- Catch json decode error
+
+ simon-ruth@pcstein16:~$ kubectl logs -p archive-query-log-captures-fetch-29017965-5v2lj -n archive-query-log
+Fetching captures for 732 new/changed sources.
+Fetching captures:   0%|          | 0/732 [00:00<?, ?source/s]Traceback (most recent call last):
+  File "/venv/lib/python3.10/site-packages/requests/models.py", line 974, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "/usr/local/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.10/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 59266 column 1 (char 15195785)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/workspace/archive_query_log/__main__.py", line 4, in <module>
+    cli()
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 1161, in __call__
+    return self.main(*args, **kwargs)
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 1082, in main
+    rv = self.invoke(ctx)
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 1697, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 1697, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 1443, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 788, in invoke
+    return __callback(*args, **kwargs)
+  File "/venv/lib/python3.10/site-packages/click/decorators.py", line 92, in new_func
+    return ctx.invoke(f, obj, *args, **kwargs)
+  File "/venv/lib/python3.10/site-packages/click/core.py", line 788, in invoke
+    return __callback(*args, **kwargs)
+  File "/workspace/archive_query_log/cli/captures.py", line 20, in fetch
+    fetch_captures(config)
+  File "/workspace/archive_query_log/captures/__init__.py", line 153, in fetch_captures
+    config.es.bulk(actions)
+  File "/workspace/archive_query_log/config.py", line 101, in bulk
+    for _ in self.streaming_bulk(actions):
+  File "/venv/lib/python3.10/site-packages/elasticsearch/helpers/actions.py", line 319, in streaming_bulk
+    for bulk_data, bulk_actions in _chunk_actions(
+  File "/venv/lib/python3.10/site-packages/elasticsearch/helpers/actions.py", line 155, in _chunk_actions
+    for action, data in actions:
+  File "/workspace/archive_query_log/captures/__init__.py", line 95, in _add_captures_actions
+    for capture in captures_iter:
+  File "/workspace/archive_query_log/captures/__init__.py", line 37, in _iter_captures
+    for cdx_capture in cdx_captures:
+  File "/venv/lib/python3.10/site-packages/web_archive_api/cdx.py", line 499, in iter_captures
+    resume_key, json = _read_response(response)
+  File "/venv/lib/python3.10/site-packages/web_archive_api/cdx.py", line 357, in _read_response
+    json = response.json()
+  File "/venv/lib/python3.10/site-packages/requests/models.py", line 978, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 59266 column 1 (char 15195785)
+Parsing https://web.archive.org/cdx/search/cdx?url=tigerdirect.com%2Fapplications%2Fcategory&output=json&matchType=prefix
+Fetching captures:   0%|          | 0/732 [01:21<?, ?source/s]
+
+✅ Explanation of the Error
+
+The key part of this error is:
+
+requests.exceptions.JSONDecodeError: Expecting value: line 59266 column 1 (char 15195785)
+
+❌ What does this mean?
+
+    The code is trying to parse the response from the Web Archive CDX API as JSON using:
+
+json = response.json()
+
+But the response from the API is not valid JSON.
+Specifically, the parser hit an empty value or malformed content at line 59266 of the response.
+
+🔍 Why does this happen?
+
+Likely reasons:
+
+    ✅ The CDX API (https://web.archive.org/cdx/...) returned invalid or partial data.
+    ✅ The response was truncated due to network issues or server timeouts.
+    ✅ The response returned HTML error pages (like 502, 503) instead of JSON.
+    ✅ The response is too large, causing incomplete transmission.
+    ✅ A server-side bug in the archive returned broken JSON.
