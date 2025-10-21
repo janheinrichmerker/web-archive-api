@@ -27,6 +27,14 @@ Web archives offer two main APIs: the [CDX API](#cdx-api) to list available capt
 
 TODO
 
+#### CDX standardization
+
+While not a formal standard, there are just three common implementations of the CDX API:
+- from the [Wayback Machine](https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server),
+- from [pywb](https://pywb.readthedocs.io/en/latest/manual/cdxserver_api.html),
+- and from [OpenWayback](https://github.com/iipc/openwayback/tree/master/wayback-cdx-server-webapp).
+This package unifies access to all variants in a common, easy-to-use Python interface.
+
 ### Memento API
 
 TODO
